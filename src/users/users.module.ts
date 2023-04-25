@@ -3,10 +3,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { User, UserSchema } from './entities/user.entity';
+import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  // 导入数据库
   imports: [
+    AuthModule,
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [UsersController],
