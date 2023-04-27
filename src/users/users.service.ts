@@ -8,11 +8,21 @@ import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>,
-    private readonly authService: AuthService) { }
+  constructor(
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private readonly authService: AuthService,
+  ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
-    // TODO：通过account，判断用户是否已经存在
+  async create(createUserDto: CreateUserDto): Promise<any> {
+    const isExistUserList: any = await this.findByAccount(
+      createUserDto.account,
+    );
+    if (isExistUserList.length > 0) {
+      return {
+        message: 'User already exists',
+        code: 400,
+      };
+    }
     const createdUser = new this.userModel(createUserDto);
     return createdUser.save();
   }
@@ -22,18 +32,22 @@ export class UsersService {
   }
 
   async findOne(id: string): Promise<User> {
-    var resultData: any = await this.userModel.findById(id).exec();
-    var backValue: any;
+    const resultData: any = await this.userModel.findById(id).exec();
+    let backValue: any;
     if (resultData) {
-      var res: any = await this.authService.login(resultData)
+      const res: any = await this.authService.login(resultData);
       backValue = {
         ...resultData._doc,
-        ...res
-      }
+        ...res,
+      };
       return backValue;
     } else {
       return resultData;
     }
+  }
+
+  async findByAccount(account: string): Promise<User[]> {
+    return this.userModel.find({ account }).exec();
   }
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {

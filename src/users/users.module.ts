@@ -11,6 +11,25 @@ import { AuthModule } from 'src/auth/auth.module';
     MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
   ],
   controllers: [UsersController],
-  providers: [UsersService],
+  // providers的几种形式
+  providers: [
+    // 这个对象如果不在users.controller.ts中注入，则会报错
+    {
+      provide: 'users',
+      useClass: UsersService,
+    },
+    // 值的注入形式
+    {
+      provide: 'userList',
+      useValue: ['Leo', 'Morning', 'Tom'],
+    },
+    // 工厂的注入形式（函数）
+    {
+      provide: 'userFactory',
+      useFactory() {
+        return 'userFactory Function';
+      },
+    },
+  ],
 })
 export class UsersModule {}
