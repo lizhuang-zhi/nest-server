@@ -26,6 +26,7 @@ export class UsersController {
     @Inject('userList') private readonly userList: string[],
     @Inject('userFactory') private readonly userFactory: string,
     private boyService: BoyService,
+    @Inject('Config') private configValue: object,
   ) {}
 
   @Get()
@@ -141,5 +142,13 @@ export class UsersController {
   @Get('use_boy')
   useBoyService(): any {
     return this.boyService.findAll();
+  }
+
+  // 全局模块
+  @Get('use_global_config')
+  useGlobalConfig(): any {
+    console.log(this.configValue);
+    console.log(typeof this.configValue);
+    return this.configValue;
   }
 }

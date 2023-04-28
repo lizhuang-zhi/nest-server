@@ -4,12 +4,15 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BoyModule } from './boy/boy.module';
+import { ConfigModule } from './config/config.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://localhost/nest-server'),
     UsersModule,
     BoyModule,
+    // 手动加入全局模块
+    ConfigModule,
   ],
   controllers: [AppController],
   providers: [AppService],
