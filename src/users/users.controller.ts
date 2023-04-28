@@ -147,8 +147,6 @@ export class UsersController {
   // 全局模块
   @Get('use_global_config')
   useGlobalConfig(): any {
-    console.log(this.configValue);
-    console.log(typeof this.configValue);
     return this.configValue;
   }
 }
