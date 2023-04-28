@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { User, UserSchema } from './entities/user.entity';
 import { AuthModule } from 'src/auth/auth.module';
+import { CounterMiddleware } from '../counter/counter.middleware';
 
 @Module({
   imports: [
@@ -32,4 +33,9 @@ import { AuthModule } from 'src/auth/auth.module';
     },
   ],
 })
-export class UsersModule {}
+export class UsersModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    // 局部中间件：在 /users 路由下起作用
+    consumer.apply(CounterMiddleware).forRoutes('users');
+  }
+}
