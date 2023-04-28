@@ -12,7 +12,7 @@ import { ConfigModule } from './config/config.module';
     UsersModule,
     BoyModule,
     // 手动加入全局模块
-    ConfigModule,
+    ConfigModule.forRoot('：传入的动态内容'),
   ],
   controllers: [AppController],
   providers: [AppService],
