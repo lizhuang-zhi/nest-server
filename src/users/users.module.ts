@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
@@ -35,7 +40,9 @@ import { CounterMiddleware } from '../counter/counter.middleware';
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // 局部中间件：在 /users 路由下起作用
-    consumer.apply(CounterMiddleware).forRoutes('users');
+    // 局部中间件：拦截所有 /users 路由下的 GET 请求
+    consumer
+      .apply(CounterMiddleware)
+      .forRoutes({ path: 'users', method: RequestMethod.GET });
   }
 }
