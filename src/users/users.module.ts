@@ -40,9 +40,13 @@ import { CounterMiddleware } from '../counter/counter.middleware';
 })
 export class UsersModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    // 局部中间件：拦截所有 /users 路由下的 GET 请求
+    // 局部中间件：拦截所有 /users 路由的 GET 请求
+    // 局部中间件：拦截所有 /users/queryall 路由的 GET 请求
     consumer
       .apply(CounterMiddleware)
-      .forRoutes({ path: 'users', method: RequestMethod.GET });
+      .forRoutes(
+        { path: '/users', method: RequestMethod.GET },
+        { path: '/users/queryall', method: RequestMethod.GET },
+      );
   }
 }
