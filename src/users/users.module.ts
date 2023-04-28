@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersService } from './users.service';
+import { BoyService } from '../boy/boy.service';
 import { UsersController } from './users.controller';
 import { User, UserSchema } from './entities/user.entity';
 import { AuthModule } from 'src/auth/auth.module';
@@ -19,6 +20,7 @@ import { CounterMiddleware } from '../counter/counter.middleware';
   controllers: [UsersController],
   // providers的几种形式
   providers: [
+    BoyService,
     // 这个对象如果不在users.controller.ts中注入，则会报错
     {
       provide: 'users',

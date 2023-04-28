@@ -13,6 +13,7 @@ import {
   Inject,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { BoyService } from '../boy/boy.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
@@ -24,6 +25,7 @@ export class UsersController {
     @Inject('users') private readonly usersService: UsersService,
     @Inject('userList') private readonly userList: string[],
     @Inject('userFactory') private readonly userFactory: string,
+    private boyService: BoyService,
   ) {}
 
   @Get()
@@ -134,5 +136,10 @@ export class UsersController {
     return {
       message: '测试跨域请求成功',
     };
+  }
+
+  @Get('use_boy')
+  useBoyService(): any {
+    return this.boyService.findAll();
   }
 }
