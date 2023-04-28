@@ -128,4 +128,11 @@ export class UsersController {
       userFactory Function
     */
   }
+
+  @Get('corstest')
+  corsTest(): object {
+    return {
+      message: '测试跨域请求成功',
+    };
+  }
 }
