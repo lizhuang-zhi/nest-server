@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cors from 'cors';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 function MiddleWareAll(req: any, res: any, next: any) {
   console.log('已进入全局中间件.....');
@@ -13,6 +14,17 @@ async function bootstrap() {
   app.use(cors());
   // 全局引入使用全局中间件
   app.use(MiddleWareAll);
+
+  // 设置swagger文档相关配置
+  const swaggerOptions = new DocumentBuilder()
+    .setTitle('nest-server api document')
+    .setDescription('nest server project api document')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, swaggerOptions);
+  SwaggerModule.setup('server-doc', app, document);
+
   await app.listen(3000);
 }
 bootstrap();

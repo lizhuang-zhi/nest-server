@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateUserDto {
+  // Dto中书写ApiProperty，设置请求描述
   @ApiProperty({ description: '账号', example: '2315831906@qq.com' })
   @IsString()
   @IsNotEmpty()

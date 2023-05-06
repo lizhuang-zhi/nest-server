@@ -16,6 +16,7 @@ import { UsersService } from './users.service';
 import { BoyService } from '../boy/boy.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { ApiBody, ApiParam, ApiResponse } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {
@@ -41,6 +42,12 @@ export class UsersController {
     // }
   }
 
+  // 添加swigger请求设置（POST请求）
+  @ApiBody({ description: '请填写注册用户信息', type: CreateUserDto })
+  @ApiResponse({
+    status: 200,
+    description: 'POST请求响应',
+  })
   @Post('register')
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
@@ -99,6 +106,12 @@ export class UsersController {
     return this.usersService.findOne(req.params.id);
   }
 
+  // 添加swigger请求设置（GET请求）
+  @ApiParam({ name: 'id', description: '用户id' })
+  @ApiResponse({
+    status: 200,
+    description: 'GET请求响应',
+  })
   @Get('query/:id')
   findOneParam(@Param('id') id: string) {
     return this.usersService.findOne(id);
