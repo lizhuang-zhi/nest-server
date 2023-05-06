@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as cors from 'cors';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+// import { HttpExceptionFilter } from './common/filters/http-exception.filter';
 
 function MiddleWareAll(req: any, res: any, next: any) {
   console.log('已进入全局中间件.....');
@@ -14,6 +15,9 @@ async function bootstrap() {
   app.use(cors());
   // 全局引入使用全局中间件
   app.use(MiddleWareAll);
+
+  // 全局过滤器
+  // app.useGlobalFilters(new HttpExceptionFilter());
 
   // 设置swagger文档相关配置
   const swaggerOptions = new DocumentBuilder()
