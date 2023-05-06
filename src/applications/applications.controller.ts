@@ -6,11 +6,18 @@ import {
   Patch,
   Param,
   Delete,
+  UseFilters,
+  HttpException,
+  HttpStatus,
+  Query,
 } from '@nestjs/common';
 import { ApplicationsService } from './applications.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { UpdateApplicationDto } from './dto/update-application.dto';
+import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
 
+// 装饰异常Filter
+@UseFilters(new HttpExceptionFilter())
 @Controller('applications')
 export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) {}
@@ -25,8 +32,19 @@ export class ApplicationsController {
     return this.applicationsService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
+  @Get('queryOne')
+  findOne(@Query('id') id: string) {
+    // 这里有个坑：@Params方式不行，因为默认id参数是必填的，所以id就一定存在，则不会触发
+    if (!id) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          message: '请求参数id 必传',
+          error: 'id is required',
+        },
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     // +号是把string类型转为number类型
     return this.applicationsService.findOne(+id);
   }
