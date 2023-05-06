@@ -10,7 +10,7 @@ import { BoyService } from '../boy/boy.service';
 import { UsersController } from './users.controller';
 import { User, UserSchema } from './entities/user.entity';
 import { AuthModule } from 'src/auth/auth.module';
-import { CounterMiddleware } from '../counter/counter.middleware';
+import { CounterMiddleware } from '../common/counter/counter.middleware';
 
 @Module({
   imports: [
