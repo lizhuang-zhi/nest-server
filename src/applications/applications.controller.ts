@@ -10,14 +10,19 @@ import {
   HttpException,
   HttpStatus,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { ApplicationsService } from './applications.service';
 import { CreateApplicationDto } from './dto/create-application.dto';
 import { UpdateApplicationDto } from './dto/update-application.dto';
 import { HttpExceptionFilter } from 'src/common/filters/http-exception.filter';
+import { RolesGuard } from 'src/common/guards/roles.guard';
+import { Roles } from 'src/common/decorators/roles.decorator';
 
 // 装饰异常Filter
 @UseFilters(new HttpExceptionFilter())
+// 添加局部守卫
+@UseGuards(RolesGuard)
 @Controller('applications')
 export class ApplicationsController {
   constructor(private readonly applicationsService: ApplicationsService) {}
@@ -28,6 +33,8 @@ export class ApplicationsController {
   }
 
   @Get()
+  // 自定义装饰器 Roles
+  @Roles('admin')
   findAll() {
     return this.applicationsService.findAll();
   }
